@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Obaro Destiny Udurie">
+  <rect width="32" height="32" rx="8" fill="#100e16"/>
+  <path d="M5.5 21.5c4.2-8.5 16.8-8.5 21 0" fill="none" stroke="#e7b15a" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M8.5 23.2c3.2-5.6 11.8-5.6 15 0" fill="none" stroke="#ff6a3d" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="16" cy="11.2" r="1.7" fill="#f6e2b8"/>
+</svg>
