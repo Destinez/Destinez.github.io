@@ -122,3 +122,19 @@ export type Contact = {
   github: string;
   linkedin: string;
 };
+
+export type PageProject = {
+  id: string;
+  name: string;
+  oneLiner: string;
+  status: string | null;
+  repoUrl: string | null;
+  liveUrl: string | null;
+  chips: readonly string[];
+};
+
+export type ExperienceStripItem = {
+  id: string;
+  company: string;
+  line: string;
+};

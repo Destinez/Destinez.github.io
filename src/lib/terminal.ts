@@ -8,6 +8,7 @@ import {
   education,
   experience,
   hero,
+  pageProjects,
   person,
   projects,
 } from "../data/content";
@@ -49,32 +50,24 @@ const COMMANDS = [
   "clear",
 ] as const;
 
-const OPEN_TARGETS = [
-  "top",
-  "about",
-  "experience",
-  "projects",
-  "cases",
-  "skills",
-  "terminal",
-  "education",
-  "contact",
-] as const;
+const OPEN_TARGETS = ["hero", "work", "path", "terminal", "contact"] as const;
 
 const OPEN_IDS: Record<string, string> = {
-  top: "top",
-  hero: "top",
-  about: "about",
-  experience: "experience",
-  projects: "projects",
-  work: "projects",
-  cases: "cases",
-  case: "cases",
-  skills: "skills",
+  top: "hero",
+  hero: "hero",
+  intro: "hero",
+  about: "hero",
+  work: "work",
+  projects: "work",
+  path: "path",
+  experience: "path",
+  cases: "terminal",
+  case: "terminal",
+  skills: "terminal",
+  education: "terminal",
+  background: "terminal",
   terminal: "terminal",
   shell: "terminal",
-  education: "education",
-  background: "education",
   contact: "contact",
 };
 
@@ -247,6 +240,15 @@ function projectBlocks(project: Project, detailed: boolean): Block[] {
     if (project.liveUrlNote) blocks.push(out([dim(project.liveUrlNote)]));
   }
   blocks.push(out([dim(`Updated ${project.lastUpdatedLagos}`)]));
+  return blocks;
+}
+
+function pageBlocks(item: (typeof pageProjects)[number]): Block[] {
+  const blocks: Block[] = [out([strong(item.name)]), out([text(item.oneLiner)])];
+  if (item.status) blocks.push(out([dim(item.status)]));
+  if (item.chips.length > 0) blocks.push(out([dim(item.chips.join("  ·  "))]));
+  if (item.repoUrl) blocks.push(out([dim("repo  "), link(prettyUrl(item.repoUrl), item.repoUrl)]));
+  if (item.liveUrl) blocks.push(out([dim("live  "), link(prettyUrl(item.liveUrl), item.liveUrl)]));
   return blocks;
 }
 
@@ -429,7 +431,13 @@ export function runCommand(raw: string, ctx: { history: readonly string[] }): Co
       };
     }
     const found = matchNamed(projects, arg, (project) => [project.id, project.name, project.repoName ?? ""]);
-    if (found.length === 0) return { blocks: [err([text(`No project matches “${arg}”.`)])] };
+    if (found.length === 0) {
+      const pages = matchNamed(pageProjects, arg, (item) => [item.id, item.name]);
+      if (pages.length > 1) return { blocks: ambiguous(pages.map((item) => item.name)) };
+      const page = pages[0];
+      if (page) return { blocks: pageBlocks(page) };
+      return { blocks: [err([text(`No project matches “${arg}”.`)])] };
+    }
     if (found.length > 1) return { blocks: ambiguous(found.map((project) => project.name)) };
     const project = found[0];
     return project ? { blocks: projectBlocks(project, true) } : { blocks: [] };
@@ -509,7 +517,7 @@ export function runCommand(raw: string, ctx: { history: readonly string[] }): Co
     return {
       blocks: [
         out([dim("sections")]),
-        out([text(OPEN_TARGETS.filter((id) => id !== "top").join("  "))]),
+        out([text(OPEN_TARGETS.join("  "))]),
         out([dim("files")]),
         out([text(portfolioFilenames().join("  "))]),
       ],
