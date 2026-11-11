@@ -6,7 +6,9 @@ import type {
   Contact,
   EducationItem,
   ExperienceRole,
+  ExperienceStripItem,
   HeroContent,
+  PageProject,
   Person,
   Project,
   SkillGroup,
@@ -556,14 +558,60 @@ export const seo = {
 } as const;
 
 export const navItems = [
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "cases", label: "Cases" },
-  { id: "skills", label: "Skills" },
-  { id: "terminal", label: "Terminal" },
-  { id: "education", label: "Education" },
+  { id: "hero", label: "Intro" },
+  { id: "work", label: "Work" },
+  { id: "path", label: "Path" },
+  { id: "terminal", label: "Shell" },
   { id: "contact", label: "Contact" },
 ] as const;
+
+export const pageHeroLine =
+  "Full-stack engineer. Eight years across fintech, media streaming, and enterprise software.";
+
+const veilProject = projects.find((item) => item.id === "veil");
+const payboxProject = projects.find((item) => item.id === "paybox-dashboard");
+
+/** The three cards on the page. Other repos stay in `projects` for the terminal. */
+export const pageProjects: readonly PageProject[] = [
+  {
+    id: "veil",
+    name: "Veil",
+    oneLiner: "Confidential group expenses. Balances stay encrypted.",
+    status: null,
+    repoUrl: veilProject?.repoUrl ?? null,
+    liveUrl: veilProject?.liveUrl ?? null,
+    chips: ["TypeScript", "React", "FHEVM", "Solidity"],
+  },
+  {
+    id: "opencivic",
+    name: "OpenCivic NG",
+    oneLiner:
+      "Nigerian civic-tech: polling-unit lookup, election info, and result tracking, with roles and an audit log.",
+    status: "In development",
+    repoUrl: null,
+    liveUrl: null,
+    chips: [],
+  },
+  {
+    id: "paybox-payments",
+    name: "Paybox Payments",
+    oneLiner:
+      "Being rebuilt as a Paystack test-mode payments dashboard, with webhooks, retries, and idempotency.",
+    status: "In development",
+    repoUrl: payboxProject?.repoUrl ?? null,
+    liveUrl: null,
+    chips: ["Paystack", "Webhooks", "Idempotency"],
+  },
+];
+
+/** One public line per employer. Fuller notes stay on the terminal. */
+export const experienceStrip: readonly ExperienceStripItem[] = [
+  { id: "apel", company: "APEL", line: "Fintech backend and admin dashboard." },
+  { id: "africanstreams", company: "Africanstreams / AfroDB", line: "Movie streaming engine, full stack." },
+  { id: "digital-switch", company: "Digital Switch Concept", line: "SwitchHRM, the company’s HR product." },
+  { id: "npa", company: "Nigerian Ports Authority", line: "Performance appraisal across the four ports." },
+  { id: "edo", company: "Edo State Ministry of Health", line: "Digital forms for health facilities." },
+  { id: "unites", company: "UNITeS Integrated", line: "Company site and payment landing pages." },
+];
 
 export const coreSkills = skills.filter((group) => group.group !== "Project-only chips");

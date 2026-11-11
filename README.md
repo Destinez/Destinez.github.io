@@ -1,18 +1,18 @@
 # Obaro Destiny Udurie
 
-Personal portfolio for Obaro Destiny Udurie, a Lagos-based software engineer. It is a single page with section anchors, published with GitHub Pages at [destinez.github.io](https://destinez.github.io/).
+Personal portfolio for Obaro Destiny Udurie, a Lagos-based software engineer. It is a short scroll of full-viewport scenes, published with GitHub Pages at [destinez.github.io](https://destinez.github.io/).
 
 ## Stack
 
 - React 19 and TypeScript
 - Vite (`base` is `/`, which a GitHub user site needs)
 - Tailwind CSS
-- Motion for scroll reveals and kinetic type
+- Motion for the pinned scroll and kinetic type
 - A canvas hero (filaments and orbits — no extra WebGL library)
 
-All public copy lives in [`src/data/content.ts`](src/data/content.ts). Edit that module; the sections, editor panes, and terminal read from it.
+All public copy lives in [`src/data/content.ts`](src/data/content.ts). The page reads the three spotlight projects and the short experience lines from that file. The terminal still reads the fuller records.
 
-The page includes an animated hero, syntax-highlighted editor panes (`about.ts`, experience files), an interactive terminal (help, about, projects, experience, skills, contact, resume, clear, and a few more, with tab completion and history), featured repositories, case studies, a timeline, skills, education, and contact.
+On a desktop with motion enabled, scrolling pins one viewport and scrubs through five scenes: intro, three projects, a company strip, a terminal, and contact. Phones and reduced-motion settings use normal document scroll instead of a pin. The terminal still answers `help`, `about`, `projects`, `experience`, `skills`, `contact`, `resume`, and `clear`.
 
 ## Local development
 

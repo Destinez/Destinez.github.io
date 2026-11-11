@@ -8,8 +8,7 @@ import {
   type Block,
   type Segment,
 } from "../lib/terminal";
-import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import { SectionHeading } from "./ui";
+import { scrollToScene } from "../lib/dom";
 
 const QUICK = ["help", "about", "projects", "experience", "skills", "contact", "resume", "clear"] as const;
 
@@ -37,7 +36,6 @@ function Segments({ segments }: { segments: readonly Segment[] }) {
 }
 
 export default function Terminal() {
-  const reduced = usePrefersReducedMotion();
   const [blocks, setBlocks] = useState<Block[]>(() => welcomeBlocks());
   const [value, setValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -82,10 +80,7 @@ export default function Terminal() {
       });
     }
     if (result.navigate) {
-      document.querySelector(result.navigate)?.scrollIntoView({
-        behavior: reduced ? "auto" : "smooth",
-        block: "start",
-      });
+      scrollToScene(result.navigate.replace("#", ""));
     }
     setValue("");
   }
@@ -139,16 +134,17 @@ export default function Terminal() {
   }
 
   return (
-    <section className="section" id="terminal" aria-labelledby="terminal-title">
-      <div className="shell">
-        <SectionHeading
-          id="terminal-title"
-          index="06"
-          kicker="Shell"
-          title="Terminal"
-          lede="Same facts as the rest of the page. Type a command, or use the buttons. Press ? anywhere else to focus this shell."
-        />
-        <div className="term">
+    <div className="term-scene">
+      <div className="scene-kicker">
+        <p className="kicker">
+          <span className="kicker-index">04</span>
+          Shell
+        </p>
+        <h2 id="terminal-title" className="scene-title">
+          Terminal
+        </h2>
+      </div>
+      <div className="term">
           <div className="term-chrome">
             <span className="traffic" aria-hidden="true">
               <span />
@@ -215,8 +211,7 @@ export default function Terminal() {
           <p id="terminal-help" className="sr-only">
             Type a command and press Enter. Tab completes. Up and Down move through command history. Shift Tab leaves this field.
           </p>
-        </div>
       </div>
-    </section>
+    </div>
   );
 }
