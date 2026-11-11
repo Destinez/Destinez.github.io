@@ -1327,13 +1327,15 @@ h3 {
   justify-content: center;
 }
 
-.scene-stack {
-  scroll-snap-type: y proximity;
-}
-
 .scene-stack .scene {
   scroll-snap-align: start;
-  scroll-snap-stop: normal;
+}
+
+.scene-meter {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .scene-hero {
@@ -1497,34 +1499,194 @@ h3 {
   transform-origin: 0 50%;
 }
 
-@media (max-width: 720px) {
-  .scene {
-    align-items: flex-start;
-    padding-top: 4.6rem;
-    padding-bottom: 1rem;
+@media (max-width: 1099px) {
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: auto;
   }
-  .scene-link {
-    padding: 0 0.35rem;
-    letter-spacing: 0.04em;
-    font-size: 0.62rem;
+
+  .scene-stack .scene {
+    height: 100svh;
+    height: 100dvh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    align-items: stretch;
+    padding: 4.25rem 0 0.85rem;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
-  .spot {
-    padding: 0.75rem 0.85rem 0.85rem;
+
+  .scene-body,
+  .work-scene,
+  .path-scene,
+  .term-scene,
+  .contact-scene,
+  .scene-hero {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
   }
-  .spot h3 {
-    font-size: 1.55rem;
+
+  .scene-body {
+    width: min(1080px, calc(100% - 3.1rem));
   }
-  .spot .project-line {
-    font-size: 1.02rem;
+
+  .term-scene .term {
+    height: auto;
   }
+
+  .scene-name {
+    font-size: clamp(2.7rem, 12vw, 4.2rem);
+  }
+
+  .scene-title {
+    font-size: 1.85rem;
+  }
+
+  .scene-line {
+    font-size: 1.2rem;
+  }
+
+  .scene-kicker {
+    margin-bottom: 0.45rem;
+  }
+
+  .scene-nav {
+    display: none;
+  }
+
+  .editor-chrome {
+    overflow-x: auto;
+  }
+
+  .work-tabs .editor-tab {
+    flex: none;
+    font-size: 0.68rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .scene-meter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    position: fixed;
+    z-index: 45;
+    right: 0.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .scene-meter button {
+    width: 44px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .scene-meter button::after {
+    content: "";
+    display: block;
+    width: 7px;
+    height: 7px;
+    margin: 0 auto;
+    border-radius: 99px;
+    background: rgba(244, 239, 230, 0.38);
+  }
+
+  .scene-meter button[aria-current="true"]::after {
+    height: 18px;
+    background: var(--color-gold);
+  }
+
+  .spot-viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .spot-row.is-carousel {
+    flex-direction: row;
+    align-items: stretch;
+    width: max-content;
+    height: 100%;
+    gap: 0.75rem;
+  }
+
+  .spot-row.is-carousel .spot {
+    width: min(22rem, calc(100vw - 2.4rem));
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow: hidden;
+  }
+
+  .path-list {
+    padding-top: 0.15rem;
+    padding-bottom: 0.3rem;
+  }
+
   .path-list li {
-    grid-template-columns: 1.8rem minmax(0, 1fr);
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+    gap: 0.15rem 0.55rem;
+    padding: 0.28rem 0.85rem 0.28rem 0.35rem;
+    font-size: 0.78rem;
+    line-height: 1.25;
   }
-  .path-co {
-    grid-column: 2;
-  }
+
+  .path-co,
   .path-line {
     grid-column: 2;
+  }
+
+  .path-line {
     color: var(--color-muted);
+  }
+
+  .term-scene .scene-kicker {
+    margin-bottom: 0.25rem;
+  }
+
+  .term-scene .scene-title {
+    font-size: 1.45rem;
+  }
+
+  .term-scene .term {
+    min-height: 0;
+    flex: 1;
+  }
+
+  .term-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .term-chips button {
+    flex: none;
+  }
+
+  .term-form {
+    flex-wrap: nowrap;
+  }
+
+  .term-prompt {
+    width: auto;
+  }
+
+  .contact-scene .contact-email {
+    font-size: clamp(1.35rem, 6.5vw, 2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot-viewport {
+    scroll-behavior: auto;
   }
 }

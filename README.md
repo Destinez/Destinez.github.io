@@ -12,7 +12,7 @@ Personal portfolio for Obaro Destiny Udurie, a Lagos-based software engineer. It
 
 All public copy lives in [`src/data/content.ts`](src/data/content.ts). The page reads the three spotlight projects and the short experience lines from that file. The terminal still reads the fuller records.
 
-On a desktop with motion enabled, scrolling pins one viewport and scrubs through five scenes: intro, three projects, a company strip, a terminal, and contact. Phones and reduced-motion settings use normal document scroll instead of a pin. The terminal still answers `help`, `about`, `projects`, `experience`, `skills`, `contact`, `resume`, and `clear`.
+On a wide screen with motion enabled, scrolling pins one viewport and scrubs through five scenes: intro, three projects, a company strip, a terminal, and contact. Phones and tablets snap one full-screen scene per swipe. Reduced motion keeps that snap and skips the animation. The terminal still answers `help`, `about`, `projects`, `experience`, `skills`, `contact`, `resume`, and `clear`.
 
 ## Local development
 

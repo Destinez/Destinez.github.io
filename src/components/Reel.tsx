@@ -1,6 +1,6 @@
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
-import { registerSceneScroller } from "../lib/dom";
+import { registerSceneScroller, scrollToScene } from "../lib/dom";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { Boundary } from "./Boundary";
 import { Contact } from "./Contact";
@@ -14,7 +14,7 @@ const Terminal = lazy(() => import("./Terminal"));
 
 function canPin(): boolean {
   return (
-    window.matchMedia("(min-width: 960px) and (not (pointer: coarse))").matches &&
+    window.matchMedia("(min-width: 1100px) and (hover: hover) and (pointer: fine)").matches &&
     !window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 }
@@ -76,7 +76,7 @@ export function Reel() {
   });
 
   useEffect(() => {
-    const wide = window.matchMedia("(min-width: 960px) and (not (pointer: coarse))");
+    const wide = window.matchMedia("(min-width: 1100px) and (hover: hover) and (pointer: fine)");
     const update = () => setPinned(wide.matches && !reduced);
     update();
     wide.addEventListener("change", update);
@@ -149,6 +149,18 @@ export function Reel() {
   return (
     <>
       <Nav activeId={activeId} />
+      <ol className="scene-meter">
+        {SCENE_BEATS.map((scene, index) => (
+          <li key={scene.id}>
+            <button
+              type="button"
+              aria-label={`${scene.label}, scene ${index + 1} of ${SCENE_BEATS.length}`}
+              aria-current={activeId === scene.id ? "true" : undefined}
+              onClick={() => scrollToScene(scene.id)}
+            />
+          </li>
+        ))}
+      </ol>
       <div
         ref={trackRef}
         className={pinned ? "reel" : "scene-stack"}

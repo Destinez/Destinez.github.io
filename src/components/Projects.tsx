@@ -15,6 +15,7 @@ export function Projects({
   pinned: boolean;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const step = useMotionValue(420);
   const t = useTransform(progress, [range[0], range[1]], [0, 1]);
   const x = useTransform([t, step], (latest) => {
@@ -29,6 +30,28 @@ export function Projects({
     const next = Math.min(pageProjects.length - 1, Math.max(0, Math.round(value * (pageProjects.length - 1))));
     setActive((current) => (current === next ? current : next));
   });
+
+  useEffect(() => {
+    if (pinned) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const onScroll = () => {
+      const cards = [...viewport.querySelectorAll<HTMLElement>(".spot")];
+      const left = viewport.scrollLeft;
+      let best = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.offsetLeft - left);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = index;
+        }
+      });
+      setActive((current) => (current === best ? current : best));
+    };
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+    return () => viewport.removeEventListener("scroll", onScroll);
+  }, [pinned]);
 
   useEffect(() => {
     const measure = () => {
@@ -74,7 +97,11 @@ export function Projects({
                 const fraction = pageProjects.length === 1 ? 0 : index / (pageProjects.length - 1);
                 scrollToScene("work", fraction);
               } else {
-                document.getElementById(`spot-${project.id}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                const viewport = viewportRef.current;
+                const card = document.getElementById(`spot-${project.id}`);
+                if (viewport && card) {
+                  viewport.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+                }
               }
             }}
           >
@@ -82,8 +109,12 @@ export function Projects({
           </button>
         ))}
       </div>
-      <div className="spot-viewport">
-        <motion.div ref={rowRef} className={pinned ? "spot-row is-scrub" : "spot-row"} style={{ x }}>
+      <div className="spot-viewport" ref={viewportRef}>
+        <motion.div
+          ref={rowRef}
+          className={pinned ? "spot-row is-scrub" : "spot-row is-carousel"}
+          {...(pinned ? { style: { x } } : {})}
+        >
           {pageProjects.map((project, index) => (
             <article key={project.id} id={`spot-${project.id}`} className={index === active ? "spot is-on" : "spot"}>
               <p className="project-kicker">
